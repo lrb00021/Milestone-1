@@ -80,5 +80,3 @@ SELECT 'orders' AS table_name, COUNT(*) AS duplicate_count FROM duplicate_orders
 UNION ALL
 SELECT 'customers', COUNT(*) FROM duplicate_customers;
 --END of Part 1
---
---Start of Part 2 Data Quality Audit
