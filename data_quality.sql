@@ -47,3 +47,14 @@ orphaned_records AS (
     LEFT JOIN customers c ON o.customer_id = c.customer_id
     WHERE c.customer_id IS NULL
 ),
+
+date_coverage_and_gaps AS(
+--Getting date start and end, range, distinct days, all possible days, and gap days
+    SELECT
+        MIN(order_purchase_timestamp) AS start_date,
+        MAX(order_purchase_timestamp) AS end_date,
+        COUNT(DISTINCT DATE(order_purchase_timestamp)) AS active_days,
+        DATE(MAX(order_purchase_timestamp)) - DATE(MIN(order_purchase_timestamp)) + 1 AS total_possible_days,
+        total_possible_days - active_days AS gap_days
+     FROM orders
+),
