@@ -8,3 +8,10 @@ inner join customers as c on o.customer_id = c.customer_id
 group by c.customer_city
 order by total_orders desc
 ),
+top_cities as(
+-- Step 2: Select top 10 cities by total orders
+select customer_city
+from city_order_counts
+order by total_orders desc
+limit 10
+),
