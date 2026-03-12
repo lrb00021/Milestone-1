@@ -29,10 +29,6 @@ select 'customers' as table_name,
 sum(case when customer_id is null then 1 else 0 end)/ count(*) as null_rate
 from customers
 UNION ALL
-select 'customers' as table_name,
-sum(case when customer_id is null then 1 else 0 end)/ count(*) as null_rate
-from customers
-UNION ALL
 select 'products' as table_name,
 sum(case when product_id is null then 1 else 0 end)/ count(*) as null_rate
 from products
@@ -40,4 +36,13 @@ UNION ALL
 select 'sellers' as table_name,
 sum(case when seller_id is null then 1 else 0 end)/ count(*) as null_rate
 from sellers
+),
+
+orphaned_records AS (
+    SELECT
+        'orders_without_customers' AS anomoaly_type,
+        COUNT(*) AS anomaly_count
+    FROM orders AS o
+    LEFT JOIN customers c ON o.customer_id = c.customer_id
+    WHERE c.customer_id IS NULL
 ),
