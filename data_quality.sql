@@ -39,6 +39,7 @@ from sellers
 ),
 
 orphaned_records AS (
+ --Counts customer_ids that dont match on orders and customers table
     SELECT
         'orders_without_customers' AS anomoaly_type,
         COUNT(*) AS anomaly_count
