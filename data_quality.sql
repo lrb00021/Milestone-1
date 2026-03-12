@@ -58,3 +58,19 @@ date_coverage_and_gaps AS(
         total_possible_days - active_days AS gap_days
      FROM orders
 ),
+
+WITH duplicate_orders AS (
+    SELECT order_id, COUNT(*) AS cnt
+    FROM orders
+    GROUP BY order_id
+    HAVING COUNT(*) > 1
+),
+duplicate_customers AS (
+    SELECT customer_id, COUNT(*) AS cnt
+    FROM customers
+    GROUP BY customer_id
+    HAVING COUNT(*) > 1
+)
+SELECT 'orders' AS table_name, COUNT(*) AS duplicate_count FROM duplicate_orders
+UNION ALL
+SELECT 'customers', COUNT(*) FROM duplicate_customers;
