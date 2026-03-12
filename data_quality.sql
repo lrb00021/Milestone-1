@@ -1,5 +1,6 @@
+-- Part 1 of Data Quality Audit
 WITH table_row_counts AS (
-  -- Document row counts per table in the database
+  --CTE of Document row counts per table in the database
   Select  'orders' AS table_name, COUNT(*) AS row_count from orders
   union all
   Select  'products' AS table_name, COUNT(*) AS row_count from products
@@ -39,7 +40,7 @@ from sellers
 ),
 
 orphaned_records AS (
- --Counts customer_ids that dont match on orders and customers table
+ --CTE of Counts customer_ids that dont match on orders and customers table
     SELECT
         'orders_without_customers' AS anomoaly_type,
         COUNT(*) AS anomaly_count
@@ -49,7 +50,7 @@ orphaned_records AS (
 ),
 
 date_coverage_and_gaps AS(
---Getting date start and end, range, distinct days, all possible days, and gap days
+--CTE of Getting date start and end, range, distinct days, all possible days, and gap days
     SELECT
         MIN(order_purchase_timestamp) AS start_date,
         MAX(order_purchase_timestamp) AS end_date,
@@ -60,17 +61,23 @@ date_coverage_and_gaps AS(
 ),
 
 WITH duplicate_orders AS (
+    --Duplicate orders CTE
     SELECT order_id, COUNT(*) AS cnt
     FROM orders
     GROUP BY order_id
     HAVING COUNT(*) > 1
 ),
 duplicate_customers AS (
+    --Duplicate Customers CTE
     SELECT customer_id, COUNT(*) AS cnt
     FROM customers
     GROUP BY customer_id
     HAVING COUNT(*) > 1
 )
+--Combining the CTEs
 SELECT 'orders' AS table_name, COUNT(*) AS duplicate_count FROM duplicate_orders
 UNION ALL
 SELECT 'customers', COUNT(*) FROM duplicate_customers;
+--END of Part 1
+--
+--Start of Part 2 Data Quality Audit
