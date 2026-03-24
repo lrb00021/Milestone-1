@@ -61,5 +61,16 @@ ranked_states AS (
         avg_order_revenue,
         RANK() OVER (ORDER BY total_revenue DESC) AS revenue_rank
     FROM state_summary
-)
+    
+)-- Final Output:
+-- Display ranked states with metrics
+SELECT
+    revenue_rank,
+    customer_state,
+    total_orders,
+    total_customers,
+    ROUND(total_revenue, 2) AS total_revenue,
+    ROUND(avg_order_revenue, 2) AS avg_order_revenue
+FROM ranked_states
+ORDER BY revenue_rank, customer_state;
 
