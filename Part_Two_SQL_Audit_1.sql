@@ -37,3 +37,11 @@ category_orders,
 rank() over (partition by customer_city order by category_orders desc) as category_rank
 from city_category_orders
 )
+--Step 5: Show top categories per city
+select
+customer_city,
+product_category_name,
+category_orders
+from ranked_categories
+where category_rank = 1
+order by category_orders desc, customer_city;
