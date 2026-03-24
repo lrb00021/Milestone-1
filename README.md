@@ -137,3 +137,34 @@ Unlike previous scripts that heavily utilized Common Table Expressions (CTEs), t
 * **The Sort (`ORDER BY` clause)**: 
   * **Purpose**: Highlights the most significant transactions first.
   * **Action**: Sorts the filtered results in descending order by `payment_value`, placing the absolute highest payments at the very top of the output.
+
+## 4th SQL Query
+
+## Overview
+This SQL script evaluates the overall business performance of different product categories on the e-commerce platform. It aggregates key metrics—including total order volume, product variety, total revenue, and average item value—and translates category names into English for standardized reporting.
+
+## Database Context
+This script links transactional data with product catalog and translation tables to provide a comprehensive view of category performance. It utilizes the following tables:
+* `order_items`
+* `products`
+* `category_translation`
+* `orders`
+
+## Code Structure and Breakdown
+This query leverages aggregate functions and precise join logic to build a category-level summary:
+
+* **The Core Metrics (`SELECT` clause)**: 
+  * **Naming**: Uses `COALESCE(tr.product_category_name_english, pr.product_category_name)` to display the English translation of the category if available, and defaults to the original Portuguese name if a translation is missing.
+  * **Volume & Variety**: Calculates `total_orders` by counting distinct `order_id`s and measures product variety (`unique_products`) by counting distinct `product_id`s within each category.
+  * **Financials**: Computes `total_revenue` and `avg_order_item_value` by adding the `price` and `freight_value` for each item, rounding the results to two decimal places for clean financial reporting.
+
+* **The Joins (`FROM` & `JOIN` clauses)**: 
+  * **Action**: Starts with `order_items` as the base table for item-level financials. It uses an `INNER JOIN` to `products` to get category names, and an `INNER JOIN` to `orders` to check the order status. 
+  * **Translation**: Crucially, it uses a `LEFT JOIN` to the `category_translation` table. This ensures that even if a product category hasn't been mapped to an English translation yet, the sales data isn't accidentally dropped from the final report.
+
+* **The Filter (`WHERE` clause)**: 
+  * **Purpose**: Ensures revenue isn't artificially inflated by canceled or unfulfilled orders.
+  * **Action**: Filters `WHERE o.order_status = 'delivered'`, ensuring only completed, successful transactions are included in the performance metrics.
+
+* **The Grouping & Sorting (`GROUP BY` & `ORDER BY` clauses)**: 
+  * **Action**: Groups all the calculated metrics by the standardized category name. Finally, it sorts the output by `total_revenue DESC`, placing the highest-grossing product categories at the very top of the report.
