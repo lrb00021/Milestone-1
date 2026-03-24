@@ -78,3 +78,36 @@ The query is organized into a sequential pipeline using Common Table Expressions
 
 ## Final Output
 The final `SELECT` statement acts as a filter on the `ranked_categories` CTE. By filtering `WHERE category_rank = 1`, the query outputs a final table showing the `customer_city`, the winning `product_category_name`, and the total `category_orders` for that top item.
+
+## 2nd SQL Query
+
+## Overview
+This SQL script determines which customer states generate the highest revenue for the Olist platform. It calculates the total revenue per order, links those orders to geographic customer data, aggregates the financial metrics by state, and assigns a rank based on total revenue. 
+
+## Database Context
+This script queries the Olist e-commerce database, utilizing joins across the following tables to link financial performance to customer locations:
+* `order_items`
+* `orders`
+* `customers`
+
+## Code Structure and Breakdown
+The query is organized into a sequential pipeline using Common Table Expressions (CTEs) to ensure accurate aggregation and avoid double-counting:
+
+* **`order_revenue`**: 
+  * **Purpose**: Calculates the true total revenue for each individual order.
+  * **Action**: Sums the `price` and `freight_value` from the `order_items` table and groups by `order_id`. This prevents row-duplication issues when an order contains multiple items.
+
+* **`delivered_orders_with_state`**: 
+  * **Purpose**: Links revenue to geography and filters for completed transactions.
+  * **Action**: Joins the `orders` table to `customers` (to get `customer_state`) and to the `order_revenue` CTE. Critically, it applies a `WHERE order_status = 'delivered'` filter so that only finalized, successful sales are counted toward state revenue.
+
+* **`state_summary`**: 
+  * **Purpose**: Aggregates the core business metrics at the state level.
+  * **Action**: Groups the data by `customer_state` and calculates the total number of unique orders, total unique customers, total combined revenue, and the Average Order Value (AOV).
+
+* **`ranked_states`**: 
+  * **Purpose**: Establishes a leaderboard of states by revenue.
+  * **Action**: Utilizes the `RANK()` window function—ordering by `total_revenue` descending—to assign a competitive rank to each state.
+
+## Final Output
+The final `SELECT` statement pulls from the `ranked_states` CTE. It cleans up the presentation by rounding the financial metrics (`total_revenue` and `avg_order_revenue`) to two decimal places and ordering the final dataset by the revenue rank and state name.
