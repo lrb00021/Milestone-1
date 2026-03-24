@@ -85,3 +85,12 @@ SELECT
     table_name AS metric_name,
     row_count AS metric_value
 FROM table_row_counts
+
+UNION ALL
+
+-- Null Rates output
+SELECT
+    'Primary Key Null Rates' AS audit_category,
+    table_name AS metric_name,
+    null_rate AS metric_value
+FROM null_rates
