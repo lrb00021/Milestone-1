@@ -66,7 +66,7 @@ duplicate_orders AS (
     FROM orders
     GROUP BY order_id
     HAVING COUNT(*) > 1
-
+),
 duplicate_customers AS (
     --Duplicate Customers CTE
     SELECT customer_id, COUNT(*) AS cnt
