@@ -111,3 +111,29 @@ The query is organized into a sequential pipeline using Common Table Expressions
 
 ## Final Output
 The final `SELECT` statement pulls from the `ranked_states` CTE. It cleans up the presentation by rounding the financial metrics (`total_revenue` and `avg_order_revenue`) to two decimal places and ordering the final dataset by the revenue rank and state name.
+
+## 3rd SQL Query
+
+## Overview
+This SQL script identifies individual product sales that exceed the global average payment value. By isolating high-value transactions, this query helps highlight premium products, bulk orders, or categories that drive the largest individual payments within the e-commerce platform.
+
+## Database Context
+This script relies on joining three core tables to link product details with financial transaction data:
+* `products`
+* `order_items`
+* `order_payments`
+
+## Code Structure and Breakdown
+Unlike previous scripts that heavily utilized Common Table Expressions (CTEs), this query uses a more direct approach with an inline subquery:
+
+* **The Core Joins (`SELECT` & `FROM`)**: 
+  * **Purpose**: Gathers the necessary descriptive and financial data.
+  * **Action**: Starts with the `products` table, joins to `order_items` to find when those products were actually purchased, and finally joins to `order_payments` to retrieve the exact `payment_value` associated with those specific orders.
+
+* **The Filter (`WHERE` clause)**: 
+  * **Purpose**: Isolates the above-average transactions.
+  * **Action**: Utilizes a scalar subquery `(SELECT AVG(payment_value) FROM order_payments)` to dynamically calculate the overall average payment across the entire database. It then filters the main query to only return rows where the individual `payment_value` is strictly greater than this global average.
+
+* **The Sort (`ORDER BY` clause)**: 
+  * **Purpose**: Highlights the most significant transactions first.
+  * **Action**: Sorts the filtered results in descending order by `payment_value`, placing the absolute highest payments at the very top of the output.
