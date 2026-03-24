@@ -40,7 +40,7 @@ The script is organized into several CTEs, each serving a specific data quality 
   * **Action**: Groups by the primary keys (`order_id` and `customer_id`) to flag any IDs that appear more than once.
 
 ## Final Output
-* Combines all CTEs into a readable final table
-* Displays all of our metric values, metric names, and audit categories
+  * Combines all CTEs into a readable final table
+  * Displays all of our metric values, metric names, and audit categories
 
 # Data Quality Audit - Part 2
