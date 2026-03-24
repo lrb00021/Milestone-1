@@ -38,8 +38,3 @@ The script is organized into several CTEs, each serving a specific data quality 
 * **`duplicate_orders` & `duplicate_customers`**: 
   * **Purpose**: Checks data uniqueness.
   * **Action**: Groups by the primary keys (`order_id` and `customer_id`) to flag any IDs that appear more than once.
-
-## Current Output
-Currently, the final `SELECT` statement at the bottom of the script outputs the results from the uniqueness checks:
-1. Total count of duplicate `order_id`s.
-2. Total count of duplicate `customer_id`s.
