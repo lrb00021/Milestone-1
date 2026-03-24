@@ -61,12 +61,6 @@ date_coverage_and_gaps AS(
      FROM orders
 ),
 
-WITH duplicate_orders AS (
-    --Duplicate orders CTE
-    SELECT order_id, COUNT(*) AS cnt
-    FROM orders
-    GROUP BY order_id
-    HAVING COUNT(*) > 1
 ),
 duplicate_customers AS (
     --Duplicate Customers CTE
