@@ -15,3 +15,16 @@ from city_order_counts
 order by total_orders desc
 limit 10
 ),
+city_category_orders as (
+-- Step 3: Count orders per category in top cities
+select
+c.customer_city,
+p.product_category_name,
+count(oi.order_id) as category_orders
+from orders o
+inner join customers as c on o.customer_id = c.customer_id
+inner join order_items as oi on oi.order_id =o.order_id
+inner join products as p on oi.product_id = p.product_id
+where c.customer_city in (select customer_city from top_cities)
+group by c.customer_city, p.product_category_name
+),
