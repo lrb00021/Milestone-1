@@ -28,3 +28,12 @@ inner join products as p on oi.product_id = p.product_id
 where c.customer_city in (select customer_city from top_cities)
 group by c.customer_city, p.product_category_name
 ),
+ranked_categories as (
+--step 4: Rank categories per city by number of orders
+Select
+customer_city,
+product_category_name,
+category_orders,
+rank() over (partition by customer_city order by category_orders desc) as category_rank
+from city_category_orders
+)
