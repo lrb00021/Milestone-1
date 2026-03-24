@@ -94,3 +94,12 @@ SELECT
     table_name AS metric_name,
     null_rate AS metric_value
 FROM null_rates
+
+UNION ALL
+
+-- Orphaned Records output
+SELECT
+    'Orphaned Records' AS audit_category,
+    anomaly_type AS metric_name,
+    anomaly_count AS metric_value
+FROM orphaned_records
