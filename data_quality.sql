@@ -23,19 +23,19 @@ WITH table_row_counts AS (
 null_rates AS (
 --NULL rates for key columns
 select 'orders' as table_name,
-sum(case when order_id is null then 1 else 0 end)/ count(*) as null_rate
+sum(case when order_id is null then 1 else 0 end) * 1.0/ count(*) as null_rate
 from orders
 UNION ALL
 select 'customers' as table_name,
-sum(case when customer_id is null then 1 else 0 end)/ count(*) as null_rate
+sum(case when customer_id is null then 1 else 0 end) * 1.0/ count(*) as null_rate
 from customers
 UNION ALL
 select 'products' as table_name,
-sum(case when product_id is null then 1 else 0 end)/ count(*) as null_rate
+sum(case when product_id is null then 1 else 0 end) * 1.0/ count(*) as null_rate
 from products
 UNION ALL
 select 'sellers' as table_name,
-sum(case when seller_id is null then 1 else 0 end)/ count(*) as null_rate
+sum(case when seller_id is null then 1 else 0 end) * 1.0/ count(*) as null_rate
 from sellers
 ),
 
