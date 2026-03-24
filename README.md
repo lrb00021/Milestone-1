@@ -44,3 +44,37 @@ The script is organized into several CTEs, each serving a specific data quality 
   * Displays all of our metric values, metric names, and audit categories
 
 # Data Quality Audit - Part 2
+
+## 1st SQL Query
+
+## Overview
+This SQL script identifies the most popular product category within the highest-performing cities. It first determines the top 10 cities by overall order volume, and then isolates the number-one selling product category for each of those specific locations.
+
+## Database Context
+This script queries an e-commerce database, utilizing standard joins across the following tables to link customer locations to specific product categories:
+* `orders`
+* `customers`
+* `order_items`
+* `products`
+
+## Code Structure and Breakdown
+The query is organized into a sequential pipeline using Common Table Expressions (CTEs):
+
+* **`city_order_counts`**: 
+  * **Purpose**: Calculates total order volume for every city.
+  * **Action**: Joins `orders` to `customers` and groups by `customer_city` to get a raw count of `order_id`s.
+
+* **`top_cities`**: 
+  * **Purpose**: Isolates the highest-performing locations.
+  * **Action**: Queries the previous CTE and applies a `LIMIT 10` to get just the top 10 cities by total orders.
+
+* **`city_category_orders`**: 
+  * **Purpose**: Aggregates product category performance strictly within the target cities.
+  * **Action**: Joins the core tables together. It uses a `WHERE IN` clause to filter only for the top 10 cities, then counts the number of times each `product_category_name` was ordered per city.
+
+* **`ranked_categories`**: 
+  * **Purpose**: Ranks the categories within each city based on popularity.
+  * **Action**: Utilizes the `RANK()` window function—partitioning the data by `customer_city` and ordering by `category_orders` descending—to assign a sequential ranking to the categories.
+
+## Final Output
+The final `SELECT` statement acts as a filter on the `ranked_categories` CTE. By filtering `WHERE category_rank = 1`, the query outputs a final table showing the `customer_city`, the winning `product_category_name`, and the total `category_orders` for that top item.
