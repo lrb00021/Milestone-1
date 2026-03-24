@@ -42,7 +42,7 @@ from sellers
 orphaned_records AS (
  --CTE of Counts customer_ids that dont match on orders and customers table
     SELECT
-        'orders_without_customers' AS anomoaly_type,
+        'orders_without_customers' AS anomaly_type,
         COUNT(*) AS anomaly_count
     FROM orders AS o
     LEFT JOIN customers c ON o.customer_id = c.customer_id
@@ -74,8 +74,3 @@ duplicate_customers AS (
     GROUP BY customer_id
     HAVING COUNT(*) > 1
 )
---Combining the CTEs
-SELECT 'orders' AS table_name, COUNT(*) AS duplicate_count FROM duplicate_orders
-UNION ALL
-SELECT 'customers', COUNT(*) FROM duplicate_customers;
---END of Part 1
