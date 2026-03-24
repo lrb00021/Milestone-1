@@ -103,3 +103,17 @@ SELECT
     anomaly_type AS metric_name,
     anomaly_count AS metric_value
 FROM orphaned_records
+
+UNION ALL
+
+-- Date Coverage (Unpivoted for the final output format)
+-- Use cast VARCHAR to keep data as is from the CTE (If not an error occurs)
+SELECT 'Date Coverage' AS audit_category, 'Start Date' AS metric_name, CAST(start_date AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
+UNION ALL
+SELECT 'Date Coverage' AS audit_category, 'End Date' AS metric_name, CAST(end_date AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
+UNION ALL
+SELECT 'Date Coverage' AS audit_category, 'Active Days' AS metric_name, CAST(active_days AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
+UNION ALL
+SELECT 'Date Coverage' AS audit_category, 'Total Possible Days' AS metric_name, CAST(total_possible_days AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
+UNION ALL
+SELECT 'Date Coverage' AS audit_category, 'Gap Days' AS metric_name, CAST(gap_days AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
