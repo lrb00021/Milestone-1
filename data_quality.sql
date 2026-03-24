@@ -126,3 +126,11 @@ SELECT
     'Duplicate Orders Count' AS metric_name,
     CAST(COUNT(*) AS VARCHAR) AS metric_value
 FROM duplicate_orders
+
+UNION ALL
+
+SELECT
+    'Duplicates' AS audit_category,
+    'Duplicate Customers Count' AS metric_name,
+    CAST(COUNT(*) AS VARCHAR) AS metric_value
+FROM duplicate_customers;
