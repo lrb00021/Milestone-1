@@ -117,3 +117,12 @@ UNION ALL
 SELECT 'Date Coverage' AS audit_category, 'Total Possible Days' AS metric_name, CAST(total_possible_days AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
 UNION ALL
 SELECT 'Date Coverage' AS audit_category, 'Gap Days' AS metric_name, CAST(gap_days AS VARCHAR) FROM date_coverage_and_gaps AS metric_value
+
+UNION ALL
+
+-- Duplicates output
+SELECT
+    'Duplicates' AS audit_category,
+    'Duplicate Orders Count' AS metric_name,
+    CAST(COUNT(*) AS VARCHAR) AS metric_value
+FROM duplicate_orders
