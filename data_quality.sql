@@ -74,3 +74,14 @@ duplicate_customers AS (
     GROUP BY customer_id
     HAVING COUNT(*) > 1
 )
+
+-- Combining all the CTEs into one readable table
+-- Union all each CTE and rename columns into audit category, metric name, and metric value
+
+
+-- Table Row Counts output
+SELECT
+    'Row Counts' AS audit_category,
+    table_name AS metric_name,
+    row_count AS metric_value
+FROM table_row_counts
