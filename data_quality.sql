@@ -61,7 +61,6 @@ date_coverage_and_gaps AS(
      FROM orders
 ),
 
-),
 duplicate_customers AS (
     --Duplicate Customers CTE
     SELECT customer_id, COUNT(*) AS cnt
