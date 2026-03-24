@@ -50,4 +50,16 @@ state_summary AS (
     FROM delivered_orders_with_state
     GROUP BY customer_state
 ),
+ranked_states AS (
+    -- Step 4:
+    -- Rank states based on total revenue using a window function
+    SELECT
+        customer_state,
+        total_orders,
+        total_customers,
+        total_revenue,
+        avg_order_revenue,
+        RANK() OVER (ORDER BY total_revenue DESC) AS revenue_rank
+    FROM state_summary
+)
 
