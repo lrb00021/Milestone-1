@@ -1,4 +1,5 @@
--- Products categories with a payment value above the overall average
+-- What products categories have a payment value above the overall average?
+-- Highlights top earning product categories
 SELECT
     ct.product_category_name_english,
     p.product_id,
