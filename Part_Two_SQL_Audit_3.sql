@@ -1,6 +1,6 @@
 -- Products categories with a payment value above the overall average
 SELECT
-    ct.product_category_name,
+    ct.product_category_name_english,
     p.product_id,
     o.order_id,
     op.payment_value
