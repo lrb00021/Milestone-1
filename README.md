@@ -115,20 +115,21 @@ The final `SELECT` statement pulls from the `ranked_states` CTE. It cleans up th
 ## 3rd SQL Query
 
 ## Overview
-This SQL script identifies individual product sales that exceed the global average payment value. By isolating high-value transactions, this query helps highlight premium products, bulk orders, or categories that drive the largest individual payments within the e-commerce platform.
+This SQL script identifies individual product sales that exceed the global average payment value across the platform. By isolating high-value transactions and translating the product categories into English, this query helps highlight premium products, bulk orders, or specific categories that drive the largest individual payments in a highly readable format.
 
 ## Database Context
-This script relies on joining three core tables to link product details with financial transaction data:
+This script relies on joining four core tables to link product details, English translations, and financial transaction data:
 * `products`
 * `order_items`
 * `order_payments`
+* `category_translation`
 
 ## Code Structure and Breakdown
-Unlike previous scripts that heavily utilized Common Table Expressions (CTEs), this query uses a more direct approach with an inline subquery:
+This query uses a direct approach with an inline subquery for filtering, alongside a multi-table join for comprehensive data retrieval:
 
 * **The Core Joins (`SELECT` & `FROM`)**: 
-  * **Purpose**: Gathers the necessary descriptive and financial data.
-  * **Action**: Starts with the `products` table, joins to `order_items` to find when those products were actually purchased, and finally joins to `order_payments` to retrieve the exact `payment_value` associated with those specific orders.
+  * **Purpose**: Gathers the necessary descriptive, translated, and financial data.
+  * **Action**: Starts with the `products` table, joins to `order_items` to find when those products were purchased, and joins to `order_payments` to retrieve the exact `payment_value`. Crucially, it adds an `INNER JOIN` to `category_translation` to pull the `product_category_name_english` instead of the native Portuguese name.
 
 * **The Filter (`WHERE` clause)**: 
   * **Purpose**: Isolates the above-average transactions.
